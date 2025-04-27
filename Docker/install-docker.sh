@@ -33,5 +33,17 @@ echo "🔵 Enabling and starting Docker service..."
 sudo systemctl enable docker
 sudo systemctl start docker
 
-echo "✅ Docker installation complete!"
+echo "🔵 Adding current user ($USER) to the docker group..."
+sudo usermod -aG docker $USER
+
+echo "🔵 Refreshing group membership..."
+# Only works for non-root users
+newgrp docker <<EOF
+echo "✅ Docker installation complete! (Group updated)"
 docker --version
+EOF
+
+echo "🔵 Docker installation complete! (Group updated)"
+
+echo "🔵 Testing Docker installation..."
+docker run hello-world
